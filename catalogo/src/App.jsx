@@ -1,27 +1,61 @@
-import './App.css'
+import './App.css';
+import Cards from './componentes/cards';
+import productos from './data/productos';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-function App() {
+// Componente Home
+function Home() {
   return (
-
-    <div className="d-flex flex-column min-vh-100" >
-          <ul class="nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Índice</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Cátalogo</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link " href="#">Sobre nosotros</a>
-        </li>
-      </ul>
     <div className="text-center mt-5">
       <h1>Bienvenido a mi catálogo</h1>
       <p>Aquí podrás explorar nuestros productos.</p>
     </div>
-    </div>
-    
-  )
+  );
 }
 
-export default App
+// Componente Catalogo
+function Catalogo() {
+  return (
+    <div className="d-flex flex-wrap justify-content-center mt-5">
+      {productos.map((producto) => (
+        <Cards
+          key={producto.id}
+          imagen={producto.imagen}
+          titulo={producto.nombre}
+          descripcion={producto.descripcion}
+        />
+      ))}
+    </div>
+  );
+}
+
+// App principal con rutas
+function App() {
+  return (
+    <Router>
+      <div className="d-flex flex-column min-vh-100 w-100">
+        {/* Menú */}
+        <ul className="nav ms-auto">
+          <li className="nav-item">
+            <Link className="nav-link" to="/">Índice</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/catalogo">Catálogo</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/sobre-nosotros">Sobre nosotros</Link>
+          </li>
+        </ul>
+
+        {/* Rutas */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/sobre-nosotros" element={<div className="text-center mt-5">Sobre nosotros</div>} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
