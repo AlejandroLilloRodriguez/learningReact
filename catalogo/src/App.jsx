@@ -14,10 +14,10 @@ function Home() {
   );
 }
 
-function NavBar() {
+function NavBar({ setSearchTerm }) {
   return(
-    <nav class="navbar bg-body-tertiary">
-      <div class="container-fluid">
+    <nav className="navbar bg-body-tertiary">
+      <div className="container-fluid">
         <ul className="nav ms-auto">
           <li className="nav-item">
             <Link className="nav-link" to="/">Índice</Link>
@@ -29,9 +29,9 @@ function NavBar() {
             <Link className="nav-link" to="/sobre-nosotros">Sobre nosotros</Link>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-          <button class="btn btn-outline-success" type="submit">Search</button>
+        <form className="d-flex" role="search"onSubmit={(e) => e.preventDefault()}>
+          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearchTerm(e.target.value)}/*se captura loq ue pone el usuario, se obtiene el valor y se manda a la funcion setsearchterm*/ />
+          <button className="btn btn-outline-success" type="submit">Search</button>
         </form>
       </div>
     </nav>
@@ -39,10 +39,13 @@ function NavBar() {
 }
 
 // Componente Catalogo
-function Catalogo() {
+function Catalogo({searchTerm}) {
+  const filteredProductos = productos.filter((producto) =>
+    producto.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <div className="d-flex flex-wrap justify-content-center mt-5">
-      {productos.map((producto) => (
+      {filteredProductos.map((producto) => (
         <Cards
           key={producto.id}
           imagen={producto.imagen}
@@ -56,15 +59,15 @@ function Catalogo() {
 
 // App principal con rutas
 function App() {
-  
+  const [searchTerm, setSearchTerm] = useState("");
   return (
     <Router>
       <div className="d-flex flex-column min-vh-100 w-100">
-        <NavBar/>
+        <NavBar setSearchTerm={setSearchTerm}/*al navbar le asignamos la función setSearchTerm que es la que obtiene el valor del input*/ /> 
         {/* Rutas */}
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/catalogo" element={<Catalogo searchTerm={searchTerm}/>} /* al catalogo le pasamos el valor de la funcion setsearchterm *//>
           <Route path="/sobre-nosotros" element={<div className="text-center mt-5">Sobre nosotros</div>} />
         </Routes>
       </div>
