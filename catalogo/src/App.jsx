@@ -2,6 +2,7 @@ import './App.css';
 import Cards from './componentes/cards';
 import productos from './data/productos';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React , { useState } from 'react';
 
 // Componente Home
 function Home() {
@@ -11,6 +12,30 @@ function Home() {
       <p>Aquí podrás explorar nuestros productos.</p>
     </div>
   );
+}
+
+function NavBar() {
+  return(
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <ul className="nav ms-auto">
+          <li className="nav-item">
+            <Link className="nav-link" to="/">Índice</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/catalogo">Catálogo</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/sobre-nosotros">Sobre nosotros</Link>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+  )
 }
 
 // Componente Catalogo
@@ -31,22 +56,11 @@ function Catalogo() {
 
 // App principal con rutas
 function App() {
+  
   return (
     <Router>
       <div className="d-flex flex-column min-vh-100 w-100">
-        {/* Menú */}
-        <ul className="nav ms-auto">
-          <li className="nav-item">
-            <Link className="nav-link" to="/">Índice</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/catalogo">Catálogo</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/sobre-nosotros">Sobre nosotros</Link>
-          </li>
-        </ul>
-
+        <NavBar/>
         {/* Rutas */}
         <Routes>
           <Route path="/" element={<Home />} />
