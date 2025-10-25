@@ -3,6 +3,7 @@ import Cards from './componentes/cards';
 import productos from './data/productos';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import React , { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Componente Home
 function Home() {
@@ -15,6 +16,14 @@ function Home() {
 }
 
 function NavBar({ setSearchTerm }) {
+  const navigate = useNavigate();           
+  const [inputValue, setInputValue] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSearchTerm(inputValue);              
+    navigate('/catalogo');                  
+  };
   return(
     <nav className="navbar bg-body-tertiary">
       <div className="container-fluid">
@@ -29,8 +38,8 @@ function NavBar({ setSearchTerm }) {
             <Link className="nav-link" to="/sobre-nosotros">Sobre nosotros</Link>
           </li>
         </ul>
-        <form className="d-flex" role="search"onSubmit={(e) => e.preventDefault()}>
-          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" onChange={(e) => setSearchTerm(e.target.value)}/*se captura loq ue pone el usuario, se obtiene el valor y se manda a la funcion setsearchterm*/ />
+        <form className="d-flex" role="search" onSubmit={handleSubmit}>
+          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" value = {inputValue} onChange={(e) => setInputValue(e.target.value)}/*se captura loq ue pone el usuario, se obtiene el valor y se manda a la funcion setsearchterm*/ />
           <button className="btn btn-outline-success" type="submit">Search</button>
         </form>
       </div>
